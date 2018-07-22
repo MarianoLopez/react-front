@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import Login from './components/Login'
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import 'bootstrap3/dist/css/bootstrap-theme.min.css'
+import 'bootstrap3/dist/css/bootstrap.min.css'
+
+ReactDOM.render(<Login />, document.getElementById('root'));
 registerServiceWorker();
