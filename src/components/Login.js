@@ -2,9 +2,28 @@ import React from 'react';
 import {Grid,Row,Col,Panel,Glyphicon, Button} from 'react-bootstrap';
 import FieldGroup from './Util/FieldGroup';
 import logo from '../logo.svg'
-import './Login.css'
+import './css/Login.css'
+import {userStore} from '../store'
 export default class Login extends React.Component {
-   
+    constructor(props){
+        super(props);
+        this.state={
+            username:'',
+            password:''
+        }
+    }
+
+    componentWillMount(){
+        userStore.subscribe(()=>{
+            console.log("user store change", userStore.getState());
+        });
+    }
+
+    handleClick = () => {
+        userStore.dispatch({"type":"LOGIN","payload":{username:this.state.username,password:this.state.password}});
+    };
+
+    updateState = (event) =>{ this.setState({[event.target.id]:event.target.value});};
 
     render() {
         return (
@@ -19,17 +38,17 @@ export default class Login extends React.Component {
                             <Panel bsStyle="info">
                                 <Panel.Heading> <Panel.Title componentClass="h3">Sign In</Panel.Title> </Panel.Heading>
                                 <Panel.Body>
-                                    <form>
+                                    <form onChange={this.updateState}>
                                         <div className="input-group">
                                             <span className="input-group-addon"><Glyphicon glyph="user"/></span>
-                                            <FieldGroup id="login-username" type="text" placeholder="username"/>
+                                            <FieldGroup id="username" type="text" placeholder="username" value={this.state.username}/>
                                         </div>
                                         <div className="input-group">
                                             <span className="input-group-addon"><Glyphicon glyph="lock"/></span>
-                                            <FieldGroup id="login-password" type="password" placeholder="pass"/>
+                                            <FieldGroup id="password" type="password" placeholder="pass" value={this.state.password}/>
                                         </div>
                                         <Col sm={12} smOffset={5} >
-                                            <Button bsStyle="primary" onClick={() => alert("sarasa")}>Login </Button>
+                                            <Button bsStyle="primary" onClick={this.handleClick}>Login </Button>
                                         </Col>
                                     </form>
                                 </Panel.Body>
