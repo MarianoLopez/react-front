@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router} from './router/'
+import {RouterConfiguration as Router} from './router/'
 import registerServiceWorker from './registerServiceWorker';
 
 import 'bootstrap3/dist/css/bootstrap-theme.min.css'
