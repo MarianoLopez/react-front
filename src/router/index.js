@@ -9,10 +9,14 @@ class RouterConfiguration extends Component {
         let isAuthenticated = this.props.isAuthenticated;
         let userRoles = this.props.roles;
         let _routes =  routes.map((route,i) => {
-            if ( route.needAuth && isAuthenticated){
+            if (route.needAuth){
                 return <PrivateRoute key={i} path={route.path} exact component={route.component} roles={route.roles} userRoles={userRoles} />
             } else{
-                return <Route key={i} path={route.path} exact component={route.component} />
+                if(route.path==="/login" && isAuthenticated){
+                    return null;
+                }else{
+                    return <Route key={i} path={route.path} exact component={route.component} />
+                }
             }
         });
         return (
@@ -32,12 +36,7 @@ class RouterConfiguration extends Component {
 
 
 
-const mapStateToProps = state =>{
-    return {
-        isAuthenticated: state.isAuthenticated,
-        roles: state.roles
-    }
-};
+
 const PrivateRoute = ({ component: Component,userRoles,roles,...rest }) => (
     <Route
         {...rest}
@@ -57,5 +56,13 @@ const PrivateRoute = ({ component: Component,userRoles,roles,...rest }) => (
         }}
     />
 );
+
+
+const mapStateToProps = state =>{
+    return {
+        isAuthenticated: state.user.isAuthenticated,
+        roles: state.user.credential.roles
+    }
+};
 
 export default connect(mapStateToProps,null)(RouterConfiguration);

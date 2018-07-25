@@ -1,31 +1,35 @@
 const stateFromLocalStorage = JSON.parse(localStorage.getItem("userState"));
 
-//TODO: refactor user.credential
 const init = {
-    isAuthenticated:false,
-    username:'',
-    token:'',
-    enable:true,
-    roles:[],
-    expires:null
+    user: {
+        isAuthenticated: false,
+        credential: {
+            username: '',
+            token:'',
+            enable:true,
+            roles:[],
+            expires:null
+        }
+    }
 };
 
-const defaultState = (Object.is(stateFromLocalStorage,undefined) || Object.is(stateFromLocalStorage,null))? init : Object.assign({isAuthenticated: true},stateFromLocalStorage);
+const defaultState = (Object.is(stateFromLocalStorage,undefined) || Object.is(stateFromLocalStorage,null))? init : Object.assign({},stateFromLocalStorage);
 
 const reducer = (state=defaultState,action) => {
     switch (action.type){
         case "SUCCESS_LOGIN":{
-            localStorage.setItem('userState', JSON.stringify(action.payload));
-            return Object.assign({},state,action.payload,{isAuthenticated:true});
+            let toStore = {...state, isAuthenticated:true,user:{...state.user, credential:action.payload}};
+            localStorage.setItem('userState', JSON.stringify(toStore));
+            return toStore;
         }
         case "LOGOUT":{
-            localStorage.setItem('userState', JSON.stringify(init));
-            return Object.assign({},init);
+            let toStore = Object.assign({},init);
+            localStorage.setItem('userState', JSON.stringify(toStore));
+            return toStore;
         }
         default:
-            break;
+            return state;
     }
-    return state;
 };
 
 export {reducer}

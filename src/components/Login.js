@@ -5,19 +5,21 @@ import logo from '../logo.svg'
 import './css/Login.css'
 import {connect} from 'react-redux'
 import {successLogin } from '../store/actions'
-import axios from 'axios'
+import {login} from '../api'
+
 class Login extends React.Component {
     handleClick = () =>{
         let username = document.getElementById('username').value;
         let password = document.getElementById('password').value;
 
-        axios.post('http://localhost:8081/login',{username,password})
+        login(username,password)
             .then(res=>{
                 this.props.successLogin(res.data);
                 this.props.history.push('/');
             }).catch(err=>{
                 console.log("err",err);
-        });
+            });
+
     };
     render() {
         return (

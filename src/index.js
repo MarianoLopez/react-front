@@ -8,5 +8,5 @@ import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap3/dist/css/bootstrap-theme.min.css'
 import 'bootstrap3/dist/css/bootstrap.min.css'
 
-ReactDOM.render(<Provider store={store}><Router /></Provider>, document.getElementById('root'));
+ReactDOM.render(<Provider store={store}><Router/></Provider>, document.getElementById('root'));
 registerServiceWorker();
