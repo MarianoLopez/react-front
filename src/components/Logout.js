@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {userStore} from "../store";
+import {logout} from '../store/actions'
 
 class Logout extends Component {
 
-    logout = () =>{ userStore.dispatch({"type":"LOGOUT"});};
 
     componentWillMount(){
-        this.logout();
+        logout();
         this.props.history.push('/login');
     }
     render() {

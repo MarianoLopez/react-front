@@ -2,14 +2,15 @@ import React, {Component} from 'react';
 import {Switch, Route, Redirect, BrowserRouter as Router} from "react-router-dom";
 import {routes} from './configuration'
 import {Forbidden,NotFound,Logout} from '../components'
-import {userStore} from "../store";
+import {connect} from 'react-redux'
 
-export class RouterConfiguration extends Component {
+class RouterConfiguration extends Component {
     render() {
-        let isAuthenticated = userStore.getState().isAuthenticated;
+        let isAuthenticated = this.props.isAuthenticated;
+        let userRoles = this.props.roles;
         let _routes =  routes.map((route,i) => {
             if ( route.needAuth && isAuthenticated){
-                return <PrivateRoute key={i} path={route.path} exact component={route.component} roles={route.roles} />
+                return <PrivateRoute key={i} path={route.path} exact component={route.component} roles={route.roles} userRoles={userRoles} />
             } else{
                 return <Route key={i} path={route.path} exact component={route.component} />
             }
@@ -31,11 +32,16 @@ export class RouterConfiguration extends Component {
 
 
 
-const PrivateRoute = ({ component: Component,roles,...rest }) => (
+const mapStateToProps = state =>{
+    return {
+        isAuthenticated: state.isAuthenticated,
+        roles: state.roles
+    }
+};
+const PrivateRoute = ({ component: Component,userRoles,roles,...rest }) => (
     <Route
         {...rest}
         render={props =>{
-            let userRoles = userStore.getState().roles;
             console.log("user roles",userRoles);
             if(userRoles<1){
                 console.log("current",props.location.pathname);
@@ -51,3 +57,5 @@ const PrivateRoute = ({ component: Component,roles,...rest }) => (
         }}
     />
 );
+
+export default connect(mapStateToProps,null)(RouterConfiguration);
