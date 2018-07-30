@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {logout} from '../store/actions'
+import {connect} from 'react-redux'
 
 class Logout extends Component {
     componentWillMount(){
-        logout();
+        this.props.logout();
         this.props.history.push('/login');
     }
     render() {
@@ -14,4 +15,4 @@ class Logout extends Component {
 }
 
 
-export default Logout;
+export default connect(null,{logout}) (Logout);

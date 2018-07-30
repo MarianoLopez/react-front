@@ -18,13 +18,13 @@ const defaultState = (Object.is(stateFromLocalStorage,undefined) || Object.is(st
 const reducer = (state=defaultState,action) => {
     switch (action.type){
         case "SUCCESS_LOGIN":{
-            let toStore = {...state, isAuthenticated:true,user:{...state.user, credential:action.payload}};
+            let toStore = {...state,user:{...state.user, credential:action.payload,isAuthenticated:true}};
             localStorage.setItem('userState', JSON.stringify(toStore));
             return toStore;
         }
         case "LOGOUT":{
             let toStore = Object.assign({},init);
-            localStorage.setItem('userState', JSON.stringify(toStore));
+            localStorage.setItem('userState', null);
             return toStore;
         }
         default:
